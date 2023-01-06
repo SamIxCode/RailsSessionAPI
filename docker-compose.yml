@@ -1,0 +1,29 @@
+version: '3'
+
+services:
+  aiohttp:
+    build:
+      context: .
+      dockerfile: /Users/ganta002/Documents/project_to_docer/RoR_aiohttp/dockerfile
+    command: python server.py
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+  rails:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: bundle exec rails s -p 3000 -b '0.0.0.0'
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+  db:
+    image: postgres:latest
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=
+      - POSTGRES_DB=session_apionly_development
+    ports:
+      - "5432:5432"

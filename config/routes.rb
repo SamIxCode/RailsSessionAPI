@@ -20,11 +20,9 @@ Rails.application.routes.draw do
 
   
   #python script
-  get '/python/:id', to: 'scripts#python'
-  get '/python/:id', to: 'scripts#python'
-  get '/python/', to: 'scripts#python'
-  get '/pyq.json', to: 'scripts#pyquery'
   get '/py', to: 'scripts#run_py'
+  get '/send_sms', to: 'scripts#send_sms'
+  get '/verify', to: 'scripts#verify'
   get '/py/:id', to: 'scripts#run_py'
   
   #user model info

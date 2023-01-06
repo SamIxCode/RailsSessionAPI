@@ -1,28 +1,40 @@
 require 'net/http'
 require 'uri'
+require 'json'
+
 class ScriptsController < ApplicationController
   #before_action :authenticate_user! 
-  @baseurl = 'http://0.0.0.0:8080'
+  @@baseurl = 'http://localhost:8080'
 
-  def python
-    @var = params[:id]
-    python_var = `python /Users/ganta002/Documents/ruby_projects/ruby_session_tut/sesion_auth-api/session_api/lib/assets/multiplier.py "#{@var}"`
-    render json: python_var
-  end
-
-  def pyquery 
-    qinuput = params[:name]
-    user_data = `python /Users/ganta002/Documents/ruby_projects/ruby_session_tut/sesion_auth-api/session_api/lib/assets/psycopg.py "#{qinuput}"`
-    render json: user_data
-  end
 
   def run_py
     
-    body = '{"email":"' + Current.user.email + '"}'
-    url=@baseurl +'/q'
+    json = {email: Current.user.email}
+    body = json.to_json
+    url = "#{@@baseurl}/q"
     # Make the POST request and render the response as JSON
-    request_json(url, body)
+    request_json(url,body)
   end
+
+  def send_sms
+    json = {id:Current.user.id}
+    body = json.to_json
+    url = @baseurl +'/send_sms'
+    request_json(url,body)
+  end
+
+  def verify
+    sms_code = params[:sms_code]
+    json = {
+      id:Current.user.id,
+      sms_code:sms_code
+    }
+    body = json.to_json
+    url = @baseurl +'/send_sms'
+    request_json(url,body)
+  end
+
+
 
   private
 
